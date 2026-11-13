@@ -1,0 +1,11 @@
+{
+  "indizes": [
+    {"name": "DAX", "ticker": "^GDAXI", "einheit": "Punkte", "beispiel_start": 24000},
+    {"name": "MDAX", "ticker": "^MDAXI", "einheit": "Punkte", "beispiel_start": 30000},
+    {"name": "EURO STOXX 50", "ticker": "^STOXX50E", "einheit": "Punkte", "beispiel_start": 5600},
+    {"name": "S&P 500", "ticker": "^GSPC", "einheit": "Punkte", "beispiel_start": 6800},
+    {"name": "Nasdaq 100", "ticker": "^NDX", "einheit": "Punkte", "beispiel_start": 25000},
+    {"name": "MSCI World (ETF)", "ticker": "EUNL.DE", "einheit": "EUR", "beispiel_start": 110}
+  ],
+  "termine_quelle": "https://www.boersenparkett.org/events/programm"
+}

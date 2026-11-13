@@ -1,0 +1,10 @@
+# Virtuelle Umgebung und Python-Zwischendateien
+.venv/
+__pycache__/
+
+# Erzeugte Dateien: entstehen durch daten_holen.py und bauen.py
+daten/
+dashboard.html
+_site/
+
+.DS_Store

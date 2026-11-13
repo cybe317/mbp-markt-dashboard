@@ -1,0 +1,326 @@
+<title>MBP Marktüberblick</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: farbiges Kopfband, Kachelraster der Indizes, darunter Termine und Newsletter-Text nebeneinander, Tabelle und Quellen am Ende */
+:root {
+  --grund: #f2f5f9; --flaeche: #ffffff; --tinte: #0c1c2b; --tinte-2: #52647a; --linie: #dbe3ec;
+  --marke: #004e78; --marke-hell: #0a7fc2; --akzent: #00639a; --akzent-flaeche: #e3f0f8;
+  --auf: #0f7a4d; --auf-flaeche: #e2f4ea; --ab: #b3261e; --ab-flaeche: #fbe7e5;
+  --hinweis: #fff4d6; --hinweis-tinte: #5c4300; --schatten: 0 1px 2px rgba(12, 28, 43, 0.05), 0 6px 20px rgba(12, 28, 43, 0.06);
+  --schrift: "Inter", system-ui, sans-serif; --titelschrift: "Space Grotesk", "Inter", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --grund: #08131d; --flaeche: #0f1f2e; --tinte: #e6eef6; --tinte-2: #94a8bd; --linie: #1f3447;
+  --akzent: #6cc0f2; --akzent-flaeche: #143349; --auf: #4cc38a; --auf-flaeche: #12382a; --ab: #ff8f85; --ab-flaeche: #44201d;
+  --hinweis: #3a2f10; --hinweis-tinte: #f5dfa0; --schatten: none; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --grund: #08131d; --flaeche: #0f1f2e; --tinte: #e6eef6; --tinte-2: #94a8bd; --linie: #1f3447;
+  --akzent: #6cc0f2; --akzent-flaeche: #143349; --auf: #4cc38a; --auf-flaeche: #12382a; --ab: #ff8f85; --ab-flaeche: #44201d;
+  --hinweis: #3a2f10; --hinweis-tinte: #f5dfa0; --schatten: none; color-scheme: dark }
+
+body { margin: 0; background: var(--grund); color: var(--tinte); font-family: var(--schrift); font-size: 15px; line-height: 1.5;
+  padding-block: 24px 48px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.seite { max-width: 1080px; margin-inline: auto; display: flex; flex-direction: column; gap: 20px; }
+h1, h2 { font-family: var(--titelschrift); font-weight: 600; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(28px, 5vw, 38px); letter-spacing: -0.02em; line-height: 1.1; }
+h2 { font-size: 18px; }
+a { color: inherit; }
+.leise { color: var(--tinte-2); }
+.zahl { font-variant-numeric: tabular-nums; }
+
+/* Kopfband in den Farben der MBP-Website; die Farben sind fest, weil das Band in beiden Farbschemata dunkel ist */
+.kopf { display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: end; justify-content: space-between; color: #ffffff;
+  background: linear-gradient(120deg, #003a5c 0%, var(--marke) 45%, var(--marke-hell) 100%); border-radius: 16px; padding: 24px; box-shadow: var(--schatten); }
+.verein { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.8; margin-bottom: 6px; }
+.kopf #stand { opacity: 0.85; margin-top: 6px; }
+.umschalter { display: inline-flex; gap: 2px; padding: 3px; border-radius: 10px; background: rgba(255, 255, 255, 0.16); }
+.umschalter button { font: inherit; font-weight: 500; color: #ffffff; background: none; border: 0; border-radius: 8px; padding: 6px 14px; cursor: pointer; }
+.umschalter button[aria-pressed="true"] { background: #ffffff; color: var(--marke); }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--akzent); outline-offset: 2px; }
+.kopf button:focus-visible { outline-color: #ffffff; }
+
+.hinweis { background: var(--hinweis); color: var(--hinweis-tinte); border-radius: 10px; padding: 10px 14px; }
+
+.raster { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.kachel, .block { background: var(--flaeche); border: 1px solid var(--linie); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; min-width: 0; box-shadow: var(--schatten); }
+.kachel { gap: 6px; }
+.kachelkopf { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.kachel .name { font-weight: 600; }
+.kachel .stand { font-family: var(--titelschrift); font-size: 30px; font-weight: 600; line-height: 1.1; letter-spacing: -0.01em; }
+.einheit { font-family: var(--schrift); font-size: 13px; font-weight: 400; letter-spacing: 0; }
+.marke { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.auf { color: var(--auf); } .ab { color: var(--ab); }
+.marke.auf { background: var(--auf-flaeche); } .marke.ab { background: var(--ab-flaeche); }
+.nebenzeile { font-size: 13px; }
+.verlauf { width: 100%; height: 76px; display: block; touch-action: pan-y; cursor: crosshair; margin-top: 6px; }
+.verlauf .linie { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.verlauf .lot { stroke: var(--tinte-2); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.punkt { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: currentColor; border: 2px solid var(--flaeche); transform: translate(-50%, -50%); pointer-events: none; }
+.diagramm { position: relative; }
+.ablesung { font-size: 13px; min-height: 1.5em; }
+
+.unten { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; align-items: start; }
+.block { gap: 14px; }
+.blockkopf { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; }
+.blockkopf a { font-size: 13px; color: var(--akzent); }
+.termine { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.termin { display: grid; grid-template-columns: 52px 1fr; gap: 14px; align-items: center; padding: 10px; border-radius: 12px; border: 1px solid var(--linie); }
+.termin.naechster { background: var(--akzent-flaeche); border-color: transparent; }
+.kalenderblatt { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 52px; border-radius: 10px; background: var(--marke); color: #ffffff; line-height: 1.1; }
+.kalenderblatt .tag { font-family: var(--titelschrift); font-size: 20px; font-weight: 600; }
+.kalenderblatt .monat { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.85; }
+.terminzeile { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.art { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--akzent); }
+.frist { font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: var(--marke); color: #ffffff; }
+.termintitel { font-weight: 600; text-decoration: none; }
+a.termintitel:hover { text-decoration: underline; }
+.terminort { font-size: 13px; overflow-wrap: anywhere; }
+#newsletter { white-space: pre-wrap; margin: 0; font: inherit; font-size: 14px; background: var(--grund); border: 1px dashed var(--linie); border-radius: 10px; padding: 14px; }
+.knopf { align-self: start; font: inherit; font-weight: 600; color: #ffffff; background: var(--marke); border: 0; border-radius: 10px; padding: 9px 16px; cursor: pointer; }
+.knopf:hover { background: var(--marke-hell); }
+.tabellenrahmen { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 520px; }
+th, td { text-align: right; padding: 9px 10px; border-top: 1px solid var(--linie); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; font-weight: 500; }
+thead th { border-top: 0; font-weight: 500; color: var(--tinte-2); font-size: 13px; }
+tbody tr:hover { background: var(--akzent-flaeche); }
+.quellen { font-size: 13px; text-align: center; }
+</style>
+
+<div class="seite">
+  <header class="kopf">
+    <div>
+      <div class="verein">Münsteraner Börsenparkett e.V.</div>
+      <h1>Marktüberblick</h1>
+      <div id="stand"></div>
+    </div>
+    <div class="umschalter" role="group" aria-label="Zeitraum der Verläufe">
+      <button type="button" id="zeitraum-1m" data-tage="21">1 Monat</button>
+      <button type="button" id="zeitraum-3m" data-tage="63">3 Monate</button>
+    </div>
+  </header>
+
+  <div class="hinweis" id="beispielhinweis" hidden>Prototyp mit Beispieldaten: Kurse und Termine sind erfunden. Echte Daten liefert <code>daten_holen.py</code> ohne <code>--beispiel</code>.</div>
+
+  <section class="raster" id="kacheln" aria-label="Indizes"></section>
+
+  <section class="unten">
+    <div class="block">
+      <div class="blockkopf">
+        <h2>Nächste MBP-Termine</h2>
+        <a href="https://www.boersenparkett.org/events/programm" target="_blank" rel="noopener">Ganzes Programm</a>
+      </div>
+      <ul class="termine" id="termine"></ul>
+    </div>
+    <div class="block">
+      <h2>Text für Newsletter und Social Media</h2>
+      <pre id="newsletter"></pre>
+      <button type="button" class="knopf" id="kopieren">Text kopieren</button>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Alle Werte als Tabelle</h2>
+    <div class="tabellenrahmen">
+      <table>
+        <thead><tr><th>Index</th><th>Stand</th><th>Tag</th><th>Woche</th><th id="spalte-zeitraum"></th></tr></thead>
+        <tbody id="tabelle"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="quellen leise">Kurse: Yahoo Finance (Schlusskurse) · Termine: boersenparkett.org · Keine Anlageberatung<br>Prototyp, keine offizielle Seite des Münsteraner Börsenparkett e.V.</footer>
+</div>
+
+<script type="application/json" id="marktdaten">/*MARKTDATEN*/</script>
+<script>
+const markt = JSON.parse(document.getElementById("marktdaten").textContent);
+const HANDELSTAGE_PRO_WOCHE = 5;
+let zeitraumTage = 63;
+
+const alsDatum = (iso) => new Date(iso + "T12:00:00");
+const datumKurz = new Intl.DateTimeFormat("de-DE", { day: "2-digit", month: "2-digit" });
+const monatKurz = new Intl.DateTimeFormat("de-DE", { month: "short" });
+const datumLang = new Intl.DateTimeFormat("de-DE", { day: "numeric", month: "long", year: "numeric" });
+const zahlFormat = (nachkommastellen) => new Intl.NumberFormat("de-DE", { minimumFractionDigits: nachkommastellen, maximumFractionDigits: nachkommastellen });
+const kursText = (wert) => zahlFormat(wert < 1000 ? 2 : 0).format(wert);
+const prozentText = (wert) => (wert > 0 ? "+" : "") + zahlFormat(1).format(wert) + " %";
+
+/* Texte von außen (Website, Konfiguration) vor dem Einsetzen ins HTML entschärfen */
+function sicher(text) {
+  return String(text).replace(/[&<>"']/g, (zeichen) => `&#${zeichen.charCodeAt(0)};`);
+}
+
+/* Veränderung in Prozent gegenüber dem Schlusskurs vor `tage` Handelstagen */
+function veraenderung(verlauf, tage) {
+  const start = verlauf[Math.max(0, verlauf.length - 1 - tage)].schluss;
+  return (verlauf.at(-1).schluss / start - 1) * 100;
+}
+
+function kennzahlen(index) {
+  return {
+    name: index.name,
+    einheit: index.einheit,
+    stand: index.verlauf.at(-1).schluss,
+    letzterTag: index.verlauf.at(-1).datum,
+    tag: veraenderung(index.verlauf, 1),
+    woche: veraenderung(index.verlauf, HANDELSTAGE_PRO_WOCHE),
+    zeitraum: veraenderung(index.verlauf, zeitraumTage),
+    ausschnitt: index.verlauf.slice(-(zeitraumTage + 1)),
+  };
+}
+
+const richtung = (wert) => (wert >= 0 ? "auf" : "ab");
+
+function pfeil(wert) {
+  return `<span class="${richtung(wert)}" aria-hidden="true">${wert >= 0 ? "▲" : "▼"}</span>`;
+}
+
+function zeitraumName() {
+  return zeitraumTage === 21 ? "1 Monat" : "3 Monate";
+}
+
+/* Zeichnet den Verlauf als Linie mit Fläche; x und y nutzen dieselbe Skala für Linie, Lot und Punkt.
+   Die Farbe (grün oder rot) kommt über currentColor von der Klasse des Diagramms. */
+function verlaufZeichnen(kachel, ausschnitt, nummer) {
+  const BREITE = 300, HOEHE = 72, RAND = 6;
+  const werte = ausschnitt.map((eintrag) => eintrag.schluss);
+  const tief = Math.min(...werte), hoch = Math.max(...werte);
+  const x = (stelle) => (stelle / (werte.length - 1)) * BREITE;
+  const y = (wert) => HOEHE - RAND - ((wert - tief) / (hoch - tief || 1)) * (HOEHE - 2 * RAND);
+  const pfad = werte.map((wert, stelle) => `${stelle ? "L" : "M"}${x(stelle).toFixed(1)},${y(wert).toFixed(1)}`).join("");
+
+  const svg = kachel.querySelector("svg");
+  svg.setAttribute("viewBox", `0 0 ${BREITE} ${HOEHE}`);
+  svg.innerHTML = `<defs><linearGradient id="fuellung-${nummer}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="currentColor" stop-opacity="0.28"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs>
+    <path fill="url(#fuellung-${nummer})" d="${pfad}L${BREITE},${HOEHE}L0,${HOEHE}Z"/><path class="linie" d="${pfad}"/><line class="lot" y1="0" y2="${HOEHE}" hidden/>`;
+
+  const lot = svg.querySelector(".lot"), punkt = kachel.querySelector(".punkt"), ablesung = kachel.querySelector(".ablesung");
+  const ruhetext = `Tief ${kursText(tief)} · Hoch ${kursText(hoch)}`;
+  const zeigen = (stelle) => {
+    lot.setAttribute("x1", x(stelle)); lot.setAttribute("x2", x(stelle));
+    punkt.style.left = (x(stelle) / BREITE) * 100 + "%";
+    punkt.style.top = (y(werte[stelle]) / HOEHE) * 100 + "%";
+  };
+  const ruhe = () => { lot.hidden = true; zeigen(werte.length - 1); ablesung.textContent = ruhetext; };
+  svg.onpointermove = (ereignis) => {
+    const flaeche = svg.getBoundingClientRect();
+    const stelle = Math.round(Math.min(1, Math.max(0, (ereignis.clientX - flaeche.left) / flaeche.width)) * (werte.length - 1));
+    lot.hidden = false; zeigen(stelle);
+    ablesung.textContent = `${datumKurz.format(alsDatum(ausschnitt[stelle].datum))} · ${kursText(werte[stelle])}`;
+  };
+  svg.onpointerleave = ruhe;
+  ruhe();
+}
+
+function kachelnZeichnen(alle) {
+  const behaelter = document.getElementById("kacheln");
+  behaelter.innerHTML = alle.map((k) => `
+    <article class="kachel">
+      <div class="kachelkopf">
+        <span class="name">${sicher(k.name)}</span>
+        <span class="marke zahl ${richtung(k.tag)}">${pfeil(k.tag)} ${prozentText(k.tag)}</span>
+      </div>
+      <div class="stand zahl">${kursText(k.stand)} <span class="einheit leise">${sicher(k.einheit)}</span></div>
+      <div class="nebenzeile zahl leise">Schluss vom ${datumKurz.format(alsDatum(k.letzterTag))} · Woche <span class="${richtung(k.woche)}">${prozentText(k.woche)}</span></div>
+      <div class="diagramm ${richtung(k.zeitraum)}"><svg class="verlauf" preserveAspectRatio="none" role="img" aria-label="Verlauf ${sicher(k.name)}, ${zeitraumName()}: ${prozentText(k.zeitraum)}"></svg><span class="punkt"></span></div>
+      <div class="ablesung leise zahl"></div>
+    </article>`).join("");
+  [...behaelter.children].forEach((kachel, stelle) => verlaufZeichnen(kachel, alle[stelle].ausschnitt, stelle));
+}
+
+function tabelleZeichnen(alle) {
+  document.getElementById("spalte-zeitraum").textContent = zeitraumName();
+  document.getElementById("tabelle").innerHTML = alle.map((k) => `
+    <tr class="zahl"><td>${sicher(k.name)}</td><td>${kursText(k.stand)}</td>
+    ${[k.tag, k.woche, k.zeitraum].map((wert) => `<td>${pfeil(wert)} ${prozentText(wert)}</td>`).join("")}</tr>`).join("");
+}
+
+/* Nur Termine ab dem Stand der Daten, der nächste zuerst */
+function kommendeTermine() {
+  return markt.termine.filter((termin) => termin.datum >= markt.stand).sort((a, b) => a.datum.localeCompare(b.datum));
+}
+
+const MAX_TERMINE = 5;
+
+/* "heute", "morgen" oder "in 7 Tagen", gerechnet ab dem Stand der Daten */
+function fristText(termin) {
+  const tage = Math.round((alsDatum(termin.datum) - alsDatum(markt.stand)) / 86400000);
+  return tage === 0 ? "heute" : tage === 1 ? "morgen" : `in ${tage} Tagen`;
+}
+
+function terminZeit(termin) {
+  return `${datumKurz.format(alsDatum(termin.datum))}, ${termin.uhrzeit} Uhr`;
+}
+
+function termineZeichnen() {
+  const kommende = kommendeTermine().slice(0, MAX_TERMINE);
+  document.getElementById("termine").innerHTML = kommende.map((termin, stelle) => {
+    const datum = alsDatum(termin.datum);
+    const titel = termin.link
+      ? `<a class="termintitel" href="${sicher(termin.link)}" target="_blank" rel="noopener">${sicher(termin.titel)}</a>`
+      : `<span class="termintitel">${sicher(termin.titel)}</span>`;
+    return `
+    <li class="termin${stelle === 0 ? " naechster" : ""}">
+      <div class="kalenderblatt" aria-hidden="true"><span class="tag zahl">${datum.getDate()}</span><span class="monat">${monatKurz.format(datum).replace(".", "")}</span></div>
+      <div>
+        <div class="terminzeile"><span class="art">${sicher(termin.art)}</span>${stelle === 0 ? `<span class="frist">${fristText(termin)}</span>` : ""}</div>
+        ${titel}
+        <div class="terminort leise">${terminZeit(termin)}${termin.ort ? " · " + sicher(termin.ort) : ""}</div>
+      </div>
+    </li>`;
+  }).join("") || `<li class="leise">Aktuell sind keine kommenden Termine eingetragen.</li>`;
+}
+
+function kalenderwoche(datum) {
+  const tag = new Date(Date.UTC(datum.getFullYear(), datum.getMonth(), datum.getDate()));
+  tag.setUTCDate(tag.getUTCDate() + 4 - (tag.getUTCDay() || 7));
+  return Math.ceil(((tag - Date.UTC(tag.getUTCFullYear(), 0, 1)) / 86400000 + 1) / 7);
+}
+
+function newsletterText(alle) {
+  const nachWoche = [...alle].sort((a, b) => b.woche - a.woche);
+  const zeilen = alle.map((k) => `${k.name}: ${kursText(k.stand)} (${prozentText(k.woche)} zur Vorwoche)`);
+  const termine = kommendeTermine().slice(0, 3).map((termin) => `${terminZeit(termin)}: ${termin.titel} (${termin.art})`);
+  return [
+    `Marktüberblick KW ${kalenderwoche(alsDatum(markt.stand))}`,
+    "",
+    ...zeilen,
+    "",
+    `Stärkster Index der Woche: ${nachWoche[0].name} (${prozentText(nachWoche[0].woche)}). Schwächster: ${nachWoche.at(-1).name} (${prozentText(nachWoche.at(-1).woche)}).`,
+    "",
+    "Was beim MBP ansteht:",
+    ...(termine.length ? termine : ["Aktuell keine Termine eingetragen."]),
+  ].join("\n");
+}
+
+function allesZeichnen() {
+  const alle = markt.indizes.map(kennzahlen);
+  kachelnZeichnen(alle);
+  tabelleZeichnen(alle);
+  document.getElementById("newsletter").textContent = newsletterText(alle);
+  document.querySelectorAll(".umschalter button").forEach((knopf) => knopf.setAttribute("aria-pressed", Number(knopf.dataset.tage) === zeitraumTage));
+}
+
+document.querySelectorAll(".umschalter button").forEach((knopf) => {
+  knopf.addEventListener("click", () => { zeitraumTage = Number(knopf.dataset.tage); allesZeichnen(); });
+});
+
+document.getElementById("kopieren").addEventListener("click", async (ereignis) => {
+  const text = document.getElementById("newsletter");
+  try {
+    await navigator.clipboard.writeText(text.textContent);
+    ereignis.target.textContent = "Kopiert";
+  } catch {
+    const auswahl = getSelection(); auswahl.selectAllChildren(text);
+    ereignis.target.textContent = "Text markiert, jetzt kopieren";
+  }
+});
+
+document.getElementById("stand").textContent = `Stand: ${datumLang.format(alsDatum(markt.stand))} · Schlusskurse`;
+document.getElementById("beispielhinweis").hidden = !markt.beispieldaten;
+termineZeichnen();
+allesZeichnen();
+</script>

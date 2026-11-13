@@ -1,0 +1,48 @@
+name: Dashboard aktualisieren und veröffentlichen
+
+on:
+  schedule:
+    - cron: "30 5 * * *" # täglich 05:30 UTC (06:30 oder 07:30 Uhr in Deutschland), alle Börsen sind dann geschlossen
+  push:
+    branches: [main]
+  workflow_dispatch: # erlaubt den Start von Hand im Reiter "Actions"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  bauen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Abhängigkeiten installieren
+        run: pip install -r requirements.txt
+      - name: Kurse und Termine holen
+        run: python daten_holen.py
+      - name: Dashboard bauen
+        run: python bauen.py
+      - name: Als Startseite ablegen
+        run: mkdir _site && cp dashboard.html _site/index.html
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  veroeffentlichen:
+    needs: bauen
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.seite.outputs.page_url }}
+    steps:
+      - id: seite
+        uses: actions/deploy-pages@v4
